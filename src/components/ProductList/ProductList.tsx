@@ -23,7 +23,7 @@ interface ProductListProps {
 export const ProductList: React.FC<ProductListProps> = React.memo(
   ({ products, onLike, onDelete, onEdit, onProductClick }) => {
     if (products.length === 0) {
-      return <div className={styles.empty}>No products found</div>;
+      return <div className={styles.empty}>Ничего не найдено</div>;
     }
 
     return (

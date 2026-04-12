@@ -40,7 +40,7 @@ export const ProductsPage: React.FC = () => {
         dispatch(setTotalPages(data.pagination.last_visible_page));
         dispatch(setError(null));
       } catch (err) {
-        dispatch(setError("Продукты не загружены"));
+        dispatch(setError("Аниме не загружено"));
         console.error(err);
       } finally {
         dispatch(setLoading(false));
@@ -105,7 +105,7 @@ export const ProductsPage: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Коллекция аниме</h1>
+        <h1 className={styles.title}>Коллекция топ аниме Тайтлов</h1>
         <button className={styles.createButton} onClick={handleCreateProduct}>
           Создать
         </button>

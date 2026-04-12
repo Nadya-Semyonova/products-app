@@ -39,7 +39,7 @@ export const CreateProductPage: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Добавь свой тайтл</h1>
+      <h1 className={styles.title}>Добавь свой Тайтл в коллекцию</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
         <div className={styles.formGroup}>
@@ -131,7 +131,7 @@ export const CreateProductPage: React.FC = () => {
             className={styles.submitButton}
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Создание..." : "Создать продукт"}
+            {isSubmitting ? "Создание..." : "Создать Тайтл"}
           </button>
         </div>
       </form>

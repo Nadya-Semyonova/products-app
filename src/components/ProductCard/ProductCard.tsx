@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import placeholderImage from "../../assets/placeholder.jpg";
 import styles from "./ProductCard.module.css";
 
 interface ProductCardProps {
@@ -33,6 +34,8 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
     onEdit,
     onClick,
   }) => {
+    const [imgError, setImgError] = useState(false);
+
     const handleCardClick = (e: React.MouseEvent) => {
       const target = e.target as HTMLElement;
       if (!target.closest(".icon-button")) {
@@ -43,17 +46,16 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
     return (
       <div className={styles.card} onClick={handleCardClick}>
         <img
-          src={imageUrl}
+          src={imgError ? placeholderImage : imageUrl}
           alt={title}
           className={styles.image}
           loading="lazy"
+          onError={() => setImgError(true)}
         />
         <div className={styles.content}>
           <h3 className={styles.title}>{title}</h3>
-          <p className={styles.synopsis}>
-            {synopsis || "No description available"}
-          </p>
-          <p className={styles.score}>{score || "N/A"}/10</p>
+          <p className={styles.synopsis}>{synopsis || "Нет описания"}</p>
+          <p className={styles.score}>{score ? `${score}/10` : "Нет оценки"}</p>
           <div className={styles.actions}>
             <button
               className={`${styles.iconButton} icon-button`}
@@ -72,7 +74,7 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
                   e.stopPropagation();
                   onEdit(id);
                 }}
-                aria-label="Edit"
+                aria-label="редактировать"
               >
                 <EditIcon />
               </button>
@@ -83,7 +85,7 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
                 e.stopPropagation();
                 onDelete(id);
               }}
-              aria-label="Delete"
+              aria-label="удалить"
             >
               <DeleteIcon />
             </button>

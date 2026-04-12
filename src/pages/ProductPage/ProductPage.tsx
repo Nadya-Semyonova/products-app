@@ -55,7 +55,7 @@ export const ProductPage: React.FC = () => {
       }
 
       if (!id || isNaN(Number(id))) {
-        setError("Неверный ID продукта");
+        setError("Неверный ID");
         setLoading(false);
         return;
       }
@@ -66,7 +66,7 @@ export const ProductPage: React.FC = () => {
         setProduct(convertApiProductToDisplay(data));
         setError(null);
       } catch (err) {
-        setError("Не удалось загрузить продукт");
+        setError("Не удалось загрузить Тайтл");
         console.error(err);
       } finally {
         setLoading(false);
@@ -85,7 +85,7 @@ export const ProductPage: React.FC = () => {
   }
 
   if (error || !product) {
-    return <div className={styles.error}>{error || "Продукт не найден"}</div>;
+    return <div className={styles.error}>{error || "Аниме не найдено"}</div>;
   }
 
   return (
