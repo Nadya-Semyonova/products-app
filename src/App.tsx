@@ -3,6 +3,7 @@ import { ProductsPage } from "./pages/ProductsPage/ProductsPage";
 import { ProductPage } from "./pages/ProductPage/ProductPage";
 import { CreateProductPage } from "./pages/CreateProductPage/CreateProductPage";
 import styles from "./App.module.css";
+import { EditProductPage } from "./pages/EditProductPage/EditProductPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/products/:id" element={<ProductPage />} />
           <Route path="/create-product" element={<CreateProductPage />} />
+          <Route path="/edit-product/:id" element={<EditProductPage />} />
         </Routes>
       </div>
     </BrowserRouter>

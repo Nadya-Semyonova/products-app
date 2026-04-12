@@ -75,6 +75,12 @@ export const ProductsPage: React.FC = () => {
     navigate("/create-product");
   }, [navigate]);
 
+  const handleEdit = useCallback(
+    (id: string | number) => {
+      navigate(`/edit-product/${id}`);
+    },
+    [navigate],
+  );
   const handlePageChange = useCallback(
     (newPage: number) => {
       dispatch(setCurrentPage(newPage));
@@ -125,6 +131,7 @@ export const ProductsPage: React.FC = () => {
         onLike={handleLike}
         onDelete={handleDelete}
         onProductClick={handleProductClick}
+        onEdit={handleEdit}
       />
 
       {!likedFilter && !searchQuery && (
