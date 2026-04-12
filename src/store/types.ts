@@ -35,3 +35,15 @@ export interface ProductsState {
   currentPage: number;
   totalPages: number;
 }
+
+export interface DisplayProduct {
+  id: string | number;
+  title: string;
+  imageUrl: string;
+  synopsis: string;
+  score: number;
+  status?: string;
+  year?: number;
+  episodes?: number;
+  isUserCreated?: boolean;
+}
