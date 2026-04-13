@@ -1,5 +1,10 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { ProductsState, Product, UserCreatedProduct } from "./types";
+import type {
+  ProductsState,
+  Product,
+  UserCreatedProduct,
+  YearRange,
+} from "./types";
 
 const initialState: ProductsState = {
   items: [],
@@ -10,6 +15,8 @@ const initialState: ProductsState = {
   error: null,
   currentPage: 1,
   totalPages: 1,
+  ratingFilter: null,
+  yearFilter: null,
 };
 
 const productsSlice = createSlice({
@@ -24,6 +31,23 @@ const productsSlice = createSlice({
     },
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
+    },
+    setRatingFilter: (state, action: PayloadAction<number | null>) => {
+      state.ratingFilter = action.payload;
+      state.currentPage = 1;
+    },
+    setYearFilter: (
+      state,
+      action: PayloadAction<number | null | YearRange>,
+    ) => {
+      state.yearFilter = action.payload;
+      state.currentPage = 1;
+    },
+    clearAllFilters: (state) => {
+      state.likedFilter = false;
+      state.searchQuery = "";
+      state.yearFilter = null;
+      state.currentPage = 1;
     },
     toggleLike: (state, action: PayloadAction<string | number>) => {
       const id = action.payload;
@@ -66,6 +90,9 @@ export const {
   setProducts,
   setLoading,
   setError,
+  setRatingFilter,
+  setYearFilter,
+  clearAllFilters,
   toggleLike,
   deleteProduct,
   setLikedFilter,

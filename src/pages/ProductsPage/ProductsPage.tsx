@@ -19,6 +19,7 @@ import { Filters } from "../../components/Filters/Filters";
 import { Search } from "../../components/Search/Search";
 import { useProducts } from "../../hooks/useProducts";
 import styles from "./ProductsPage.module.css";
+import { AdditionalFilters } from "../../components/AdditionalFilters/AdditionalFilters";
 
 export const ProductsPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -121,6 +122,8 @@ export const ProductsPage: React.FC = () => {
         value={searchQuery}
         onChange={(v) => dispatch(setSearchQuery(v))}
       />
+      <AdditionalFilters />
+
       <Filters
         showLikedOnly={likedFilter}
         onToggleLikedFilter={(v) => dispatch(setLikedFilter(v))}
@@ -130,8 +133,8 @@ export const ProductsPage: React.FC = () => {
         products={mappedProducts}
         onLike={handleLike}
         onDelete={handleDelete}
-        onProductClick={handleProductClick}
         onEdit={handleEdit}
+        onProductClick={handleProductClick}
       />
 
       {!likedFilter && !searchQuery && (
