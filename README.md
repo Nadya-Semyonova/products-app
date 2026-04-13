@@ -1,42 +1,71 @@
-# React + TypeScript + Vite
+# Anime Collection App || Приложение с коллекцией аниме 
+
+Приложение для просмотра коллекции топ аниме с возможностью создавать собственные тайтлы, ставить лайки и фильтровать контент.
+
+## Описание
+
+SPA приложение, которое позволяет:
+- Просматривать список популярных аниме из Jikan API
+- Добавлять свои тайтлы в коллекцию
+- Ставить лайки на понравившиеся аниме
+- Удалять тайтлы из коллекции
+- Редактировать созданные пользователем тайтлы
+- Фильтровать по избранному и году выпуска
+- Искать тайтлы по названию
+- Просматривать детальную информацию о каждом тайтле
+
+Проект использует публичное API Jikan API (неофициальное API MyAnimeList- изображения могут не загружаться без vpn в РФ)
+- Основные эндпоинты:
+- GET /top/anime - получение списка популярных аниме
+- GET /anime/{id}/full - получение детальной информации об аниме
+
+## Технологии
+
+- **React 19** 
+- **TypeScript** - типизация кода
+- **Redux Toolkit** - управление состоянием
+- **React Router DOM** - маршрутизация
+- **React Hook Form** - работа с формами
+- **Axios** - HTTP запросы к API
+- **Material UI** - иконки
+- **CSS Modules** - стилизация компонентов
+- **Vite** - сборка проекта
+
+## Установка и запуск
+
+### Требования
+- Node.js 18+
+- npm или yarn
+
+### Установка зависимостей
+```bash
+npm install
 
 ```src/
-├── api/
-│   └── jikanApi.ts
-├── components/
-│   ├── ProductCard/
-│   │   ├── ProductCard.tsx
-│   │   └── ProductCard.module.css
-│   ├── ProductList/
-│   │   ├── ProductList.tsx
-│   │   └── ProductList.module.css
-│   ├── Filters/
-│   │   ├── Filters.tsx
-│   │   └── Filters.module.css
-│   └── Search/
-│       ├── Search.tsx
-│       └── Search.module.css
-├── pages/
-│   ├── ProductsPage/
-│   │   ├── ProductsPage.tsx
-│   │   └── ProductsPage.module.css
-│   ├── ProductPage/
-│   │   ├── ProductPage.tsx
-│   │   └── ProductPage.module.css
-│   └── CreateProductPage/
-│       ├── CreateProductPage.tsx
-│       └── CreateProductPage.module.css
-├── store/
-│   ├── store.ts
-│   ├── productsSlice.ts
-│   └── types.ts
-├── hooks/
-│   ├── useDebounce.ts
-│   └── useProducts.ts
-├── utils/
-│   └── constants.ts
-├── App.tsx
-├── App.module.css
-├── main.tsx
-└── vite-env.d.ts
+├── api/                 # API запросы к Jikan API
+├── assets/              # Статические файлы (изображения)
+├── components/          # Переиспользуемые компоненты
+│   ├── ProductCard/    # Карточка продукта
+│   ├── ProductList/    # Список продуктов
+│   ├── Filters/        # Базовые фильтры
+│   ├── AdditionalFilters/ # Дополнительные фильтры
+│   ├── Search/         # Поиск
+│   └── SuccessModal/   # Модальное окно успеха
+├── pages/              # Страницы приложения
+│   ├── ProductsPage/   # Главная страница со списком
+│   ├── ProductPage/    # Страница детального просмотра
+│   ├── CreateProductPage/ # Страница создания тайтла
+│   └── EditProductPage/   # Страница редактирования
+├── store/              # Redux store
+│   ├── store.ts        # Конфигурация store
+│   ├── productsSlice.ts # Slice для продуктов
+│   └── types.ts        # TypeScript типы
+├── hooks/              # Кастомные хуки
+│   ├── useDebounce.ts  # Дебаунс для поиска
+│   └── useProducts.ts  # Фильтрация продуктов
+├── styles/             # Глобальные стили
+│   └── variables.css   # CSS переменные
+├── utils/              # Вспомогательные функции
+│   └── constants.ts    # Константы
+└── App.tsx             # Корневой компонент
 ```
