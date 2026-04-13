@@ -11,19 +11,26 @@ interface JikanResponse {
   };
 }
 
+interface FetchParams {
+  page: number;
+  limit: number;
+  order_by: string;
+  sort: string;
+  start_date?: string;
+  end_date?: string;
+}
+
 export const fetchTopAnime = async (
   page: number = 1,
   startDate?: string | null,
   endDate?: string | null,
 ) => {
-  const params: Record<string, number | string> = {
+  const params: FetchParams = {
     page,
     limit: DEFAULT_PAGE_SIZE,
     order_by: "popularity",
     sort: "asc",
   };
-
-  // Добавляем фильтр по году если он есть
 
   if (startDate) {
     params.start_date = startDate;

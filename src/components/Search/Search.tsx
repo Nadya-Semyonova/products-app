@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useDebounce } from "../../hooks/useDebounce";
 import styles from "./Search.module.css";
 
@@ -17,13 +17,20 @@ export const Search: React.FC<SearchProps> = React.memo(
       onChange(debouncedValue);
     }, [debouncedValue, onChange]);
 
+    const handleChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        setLocalValue(e.target.value);
+      },
+      [],
+    );
+
     return (
       <div className={styles.search}>
         <input
           type="text"
           className={styles.input}
           value={localValue}
-          onChange={(e) => setLocalValue(e.target.value)}
+          onChange={handleChange}
           placeholder={placeholder}
         />
       </div>

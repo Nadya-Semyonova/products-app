@@ -1,19 +1,25 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import type { RootState } from "../../store/store";
 import { setYearFilter, clearAllFilters } from "../../store/productsSlice";
 import type { YearRange } from "../../store/types";
 import styles from "./AdditionalFilters.module.css";
+import React from "react";
 
-export const AdditionalFilters: React.FC = () => {
+interface YearRangeItem {
+  label: string;
+  min: number | null;
+  max: number | null;
+}
+
+export const AdditionalFilters: React.FC = React.memo(() => {
   const dispatch = useDispatch();
   const { yearFilter } = useSelector((state: RootState) => state.products);
 
   // Функция для генерации динамических диапазонов годов
-  const yearRanges = useMemo(() => {
+  const yearRanges = useMemo((): YearRangeItem[] => {
     const currentYear = new Date().getFullYear();
-    const ranges: { label: string; min: number | null; max: number | null }[] =
-      [];
+    const ranges: YearRangeItem[] = [];
 
     let startYear = currentYear;
     let endYear = currentYear;
@@ -37,34 +43,40 @@ export const AdditionalFilters: React.FC = () => {
     return ranges;
   }, []);
 
-  const handleYearFilter = (range: (typeof yearRanges)[0] | null) => {
-    if (range === null) {
-      dispatch(setYearFilter(null));
-    } else {
-      const yearRangeValue: YearRange = {
-        type: "range",
-        min: range.min,
-        max: range.max,
-        label: range.label,
-      };
-      dispatch(setYearFilter(yearRangeValue));
-    }
-  };
+  const handleYearFilter = useCallback(
+    (range: YearRangeItem | null) => {
+      if (range === null) {
+        dispatch(setYearFilter(null));
+      } else {
+        const yearRangeValue: YearRange = {
+          type: "range",
+          min: range.min,
+          max: range.max,
+          label: range.label,
+        };
+        dispatch(setYearFilter(yearRangeValue));
+      }
+    },
+    [dispatch],
+  );
 
-  const handleClearFilters = () => {
+  const handleClearFilters = useCallback(() => {
     dispatch(clearAllFilters());
-  };
+  }, [dispatch]);
 
-  const isYearRangeActive = (range: (typeof yearRanges)[0]) => {
-    if (
-      !yearFilter ||
-      typeof yearFilter !== "object" ||
-      !("label" in yearFilter)
-    ) {
-      return false;
-    }
-    return yearFilter.label === range.label;
-  };
+  const isYearRangeActive = useCallback(
+    (range: YearRangeItem): boolean => {
+      if (
+        !yearFilter ||
+        typeof yearFilter !== "object" ||
+        !("label" in yearFilter)
+      ) {
+        return false;
+      }
+      return yearFilter.label === range.label;
+    },
+    [yearFilter],
+  );
 
   const hasActiveFilters = yearFilter !== null;
 
@@ -98,4 +110,6 @@ export const AdditionalFilters: React.FC = () => {
       )}
     </div>
   );
-};
+});
+
+AdditionalFilters.displayName = "AdditionalFilters";

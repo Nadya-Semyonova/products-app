@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./SuccessModal.module.css";
 
@@ -24,12 +24,16 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
     }
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
-
-  const handleGoToHome = () => {
+  const handleGoToHome = useCallback(() => {
     onClose();
     navigate("/products");
-  };
+  }, [onClose, navigate]);
+
+  const handleClose = useCallback(() => {
+    onClose();
+  }, [onClose]);
+
+  if (!isOpen) return null;
 
   return (
     <div className={styles.overlay}>
@@ -38,7 +42,7 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
         <button className={styles.button} onClick={handleGoToHome}>
           На главную
         </button>
-        <button className={styles.closeButton} onClick={onClose}>
+        <button className={styles.closeButton} onClick={handleClose}>
           ✕
         </button>
       </div>
