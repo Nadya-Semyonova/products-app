@@ -19,6 +19,31 @@ const initialState: ProductsState = {
   yearFilter: null,
 };
 
+// Функция для преобразования YearRange в даты для API
+export const yearRangeToDates = (
+  yearFilter: YearRange | null | number,
+): { startDate: string | null; endDate: string | null } => {
+  if (
+    !yearFilter ||
+    typeof yearFilter !== "object" ||
+    !("type" in yearFilter)
+  ) {
+    return { startDate: null, endDate: null };
+  }
+
+  let startDate: string | null = null;
+  let endDate: string | null = null;
+
+  if (yearFilter.min !== null && yearFilter.max !== null) {
+    startDate = `${yearFilter.min}-01-01`;
+    endDate = `${yearFilter.max}-12-31`;
+  } else if (yearFilter.min === null && yearFilter.max !== null) {
+    endDate = `${yearFilter.max}-12-31`;
+  }
+
+  return { startDate, endDate };
+};
+
 const productsSlice = createSlice({
   name: "products",
   initialState,

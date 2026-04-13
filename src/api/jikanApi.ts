@@ -11,12 +11,29 @@ interface JikanResponse {
   };
 }
 
-export const fetchTopAnime = async (page: number = 1) => {
-  const response = await axios.get<JikanResponse>(`${API_BASE_URL}/top/anime`, {
-    params: {
-      page,
-      limit: DEFAULT_PAGE_SIZE,
-    },
+export const fetchTopAnime = async (
+  page: number = 1,
+  startDate?: string | null,
+  endDate?: string | null,
+) => {
+  const params: Record<string, number | string> = {
+    page,
+    limit: DEFAULT_PAGE_SIZE,
+    order_by: "popularity",
+    sort: "asc",
+  };
+
+  // Добавляем фильтр по году если он есть
+
+  if (startDate) {
+    params.start_date = startDate;
+  }
+  if (endDate) {
+    params.end_date = endDate;
+  }
+
+  const response = await axios.get<JikanResponse>(`${API_BASE_URL}/anime`, {
+    params,
   });
   return response.data;
 };

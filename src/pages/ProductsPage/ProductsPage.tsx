@@ -12,6 +12,7 @@ import {
   setSearchQuery,
   setCurrentPage,
   setTotalPages,
+  yearRangeToDates,
 } from "../../store/productsSlice";
 import { fetchTopAnime } from "../../api/jikanApi";
 import { ProductList } from "../../components/ProductList/ProductList";
@@ -24,15 +25,25 @@ import { AdditionalFilters } from "../../components/AdditionalFilters/Additional
 export const ProductsPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { loading, error, likedFilter, searchQuery, currentPage, totalPages } =
-    useSelector((state: RootState) => state.products);
+  const {
+    loading,
+    error,
+    likedFilter,
+    searchQuery,
+    currentPage,
+    totalPages,
+    yearFilter,
+  } = useSelector((state: RootState) => state.products);
   const { filteredProducts } = useProducts();
 
   useEffect(() => {
     const loadProducts = async () => {
       dispatch(setLoading(true));
       try {
-        const data = await fetchTopAnime(currentPage);
+        const { startDate, endDate } = yearRangeToDates(yearFilter);
+
+        const data = await fetchTopAnime(currentPage, startDate, endDate);
+
         const productsWithLike = data.data.map((product) => ({
           ...product,
           liked: false,
@@ -49,7 +60,7 @@ export const ProductsPage: React.FC = () => {
     };
 
     loadProducts();
-  }, [dispatch, currentPage]);
+  }, [dispatch, currentPage, yearFilter]);
 
   const handleLike = useCallback(
     (id: string | number) => {
@@ -82,6 +93,7 @@ export const ProductsPage: React.FC = () => {
     },
     [navigate],
   );
+
   const handlePageChange = useCallback(
     (newPage: number) => {
       dispatch(setCurrentPage(newPage));
@@ -95,11 +107,13 @@ export const ProductsPage: React.FC = () => {
     title: product.title,
     imageUrl:
       "images" in product ? product.images.jpg.image_url : product.image_url,
-    synopsis: product.synopsis || "No description available",
+    synopsis: product.synopsis || "Описание отсутствует",
     score: product.score || 0,
     liked: product.liked || false,
     isUserCreated: product.isUserCreated || false,
   }));
+
+  const hasYearFilter = yearFilter !== null;
 
   if (loading && currentPage === 1) {
     return <div className={styles.loading}>Загрузка...</div>;
@@ -112,7 +126,7 @@ export const ProductsPage: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Коллекция топ аниме </h1>
+        <h1 className={styles.title}>Коллекция топ аниме</h1>
         <button className={styles.createButton} onClick={handleCreateProduct}>
           Создать
         </button>
@@ -137,7 +151,8 @@ export const ProductsPage: React.FC = () => {
         onProductClick={handleProductClick}
       />
 
-      {!likedFilter && !searchQuery && (
+      {/* Пагинация скрыта если активен фильтр по годам */}
+      {!likedFilter && !searchQuery && !hasYearFilter && (
         <div className={styles.pagination}>
           <button
             className={styles.pageButton}
