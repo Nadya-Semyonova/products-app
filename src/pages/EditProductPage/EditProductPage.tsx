@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import type { RootState } from "../../store/store";
+import { SuccessModal } from "../../components/SuccessModal/SuccessModal";
 import styles from "./EditProductPage.module.css";
 import { addUserProduct, deleteProduct } from "../../store/productsSlice";
 
@@ -17,6 +18,7 @@ export const EditProductPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
 
   const product = useSelector((state: RootState) =>
     state.products.userProducts.find((p) => p.id === id),
@@ -42,10 +44,8 @@ export const EditProductPage: React.FC = () => {
   }
 
   const onSubmit = (data: FormData) => {
-    // Удаляем старый продукт
     dispatch(deleteProduct(id!));
 
-    // Добавляем обновленный
     const updatedProduct = {
       id: id!,
       title: data.title,
@@ -57,12 +57,17 @@ export const EditProductPage: React.FC = () => {
     };
 
     dispatch(addUserProduct(updatedProduct));
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
     navigate("/products");
   };
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Добавь свой Тайтл в коллекцию</h1>
+      <h1 className={styles.title}>Редактировать тайтл</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
         <div className={styles.formGroup}>
@@ -158,6 +163,12 @@ export const EditProductPage: React.FC = () => {
           </button>
         </div>
       </form>
+
+      <SuccessModal
+        isOpen={showModal}
+        message="Ваши изменения сохранены!"
+        onClose={handleCloseModal}
+      />
     </div>
   );
 };

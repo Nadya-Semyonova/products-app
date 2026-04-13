@@ -1,9 +1,10 @@
-import React from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { addUserProduct } from "../../store/productsSlice";
+import { SuccessModal } from "../../components/SuccessModal/SuccessModal";
 import styles from "./CreateProductPage.module.css";
 
 interface FormData {
@@ -16,6 +17,9 @@ interface FormData {
 export const CreateProductPage: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [productTitle, setProductTitle] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -34,6 +38,12 @@ export const CreateProductPage: React.FC = () => {
     };
 
     dispatch(addUserProduct(newProduct));
+    setProductTitle(data.title);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
     navigate("/products");
   };
 
@@ -135,6 +145,12 @@ export const CreateProductPage: React.FC = () => {
           </button>
         </div>
       </form>
+
+      <SuccessModal
+        isOpen={showModal}
+        message={`"${productTitle}" добавлен в коллекцию!`}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 };
