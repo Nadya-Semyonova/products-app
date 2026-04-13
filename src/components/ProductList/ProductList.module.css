@@ -8,6 +8,6 @@
 .empty {
   text-align: center;
   padding: 60px 20px;
-  color: #999;
-  font-size: 18px;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-lg);
 }

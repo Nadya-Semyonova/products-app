@@ -1,18 +1,18 @@
 .search {
-  padding: 16px 20px;
   margin-bottom: 20px;
 }
 
 .input {
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   font-size: 16px;
   transition: border-color 0.2s;
+  cursor: pointer;
 }
 
 .input:focus {
   outline: none;
-  border-color: #1976d2;
+  border-color: var(--color-primary);
 }

@@ -91,7 +91,7 @@ export const ProductPage: React.FC = () => {
   return (
     <div className={styles.container}>
       <button className={styles.backButton} onClick={handleBack}>
-        ← Назад к продуктам
+        Назад к коллекции
       </button>
 
       <div className={styles.productCard}>

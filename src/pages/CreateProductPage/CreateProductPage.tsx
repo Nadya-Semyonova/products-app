@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { addUserProduct } from "../../store/productsSlice";
 import { SuccessModal } from "../../components/SuccessModal/SuccessModal";
-import styles from "./CreateProductPage.module.css";
+import styles from "../EditProductPage/EditProductPage.module.css";
 
 interface FormData {
   title: string;

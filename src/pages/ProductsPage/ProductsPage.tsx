@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import type { AppDispatch, RootState } from "../../store/store";
@@ -112,7 +112,7 @@ export const ProductsPage: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Коллекция топ аниме Тайтлов</h1>
+        <h1 className={styles.title}>Коллекция топ аниме </h1>
         <button className={styles.createButton} onClick={handleCreateProduct}>
           Создать
         </button>
