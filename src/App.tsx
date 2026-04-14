@@ -6,7 +6,7 @@ import { EditProductPage } from "./pages/EditProductPage/EditProductPage";
 
 function App() {
   return (
-    <BrowserRouter basename="/anime-products-app">
+    <BrowserRouter basename="/products-app">
       <div>
         <Routes>
           <Route path="/" element={<Navigate to="/products" />} />
