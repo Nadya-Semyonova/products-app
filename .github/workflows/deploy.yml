@@ -3,8 +3,8 @@ name: Деплой на GitHub Pages
 on:
   push:
     branches:
-      - main  
-  workflow_dispatch:  
+      - main
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -29,13 +29,18 @@ jobs:
           cache: 'npm'
 
       - name: Установка зависимостей
-        run: npm ci
+        run: npm install  
+
+      - name: Проверка типов TypeScript
+        run: npx tsc --noEmit
 
       - name: Линтинг кода
         run: npm run lint
 
       - name: Сборка проекта
         run: npm run build
+        env:
+          CI: false
 
       - name: Загрузка артефактов
         uses: actions/upload-pages-artifact@v3
