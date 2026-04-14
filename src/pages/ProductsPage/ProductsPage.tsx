@@ -1,6 +1,6 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // ← убрали useLocation
 import type { AppDispatch, RootState } from "../../store/store";
 import {
   setProducts,
@@ -25,6 +25,8 @@ import { AdditionalFilters } from "../../components/AdditionalFilters/Additional
 export const ProductsPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
+
   const {
     loading,
     error,
@@ -33,15 +35,23 @@ export const ProductsPage: React.FC = () => {
     currentPage,
     totalPages,
     yearFilter,
+    items,
   } = useSelector((state: RootState) => state.products);
   const { filteredProducts } = useProducts();
 
+  // Не показываем загрузку если уже загружали
+  const shouldShowLoading = loading && !hasLoadedOnce && currentPage === 1;
+
   useEffect(() => {
     const loadProducts = async () => {
+      // Если уже загружали и нет фильтра - пропускаем
+      if (hasLoadedOnce && !yearFilter && items.length > 0) {
+        return;
+      }
+
       dispatch(setLoading(true));
       try {
         const { startDate, endDate } = yearRangeToDates(yearFilter);
-
         const data = await fetchTopAnime(currentPage, startDate, endDate);
 
         const productsWithLike = data.data.map((product) => ({
@@ -51,6 +61,7 @@ export const ProductsPage: React.FC = () => {
         dispatch(setProducts(productsWithLike));
         dispatch(setTotalPages(data.pagination.last_visible_page));
         dispatch(setError(null));
+        setHasLoadedOnce(true);
       } catch (err) {
         dispatch(setError("Аниме не загружено"));
         console.error(err);
@@ -60,7 +71,7 @@ export const ProductsPage: React.FC = () => {
     };
 
     loadProducts();
-  }, [dispatch, currentPage, yearFilter]);
+  }, [dispatch, currentPage, yearFilter, hasLoadedOnce, items.length]);
 
   const handleLike = useCallback(
     (id: string | number) => {
@@ -115,7 +126,7 @@ export const ProductsPage: React.FC = () => {
 
   const hasYearFilter = yearFilter !== null;
 
-  if (loading && currentPage === 1) {
+  if (shouldShowLoading) {
     return <div className={styles.loading}>Загрузка...</div>;
   }
 
@@ -151,7 +162,6 @@ export const ProductsPage: React.FC = () => {
         onProductClick={handleProductClick}
       />
 
-      {/* Пагинация скрыта если активен фильтр по годам */}
       {!likedFilter && !searchQuery && !hasYearFilter && (
         <div className={styles.pagination}>
           <button
